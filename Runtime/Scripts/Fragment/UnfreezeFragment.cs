@@ -14,7 +14,16 @@ public class UnfreezeFragment : MonoBehaviour
 
     // True if this fragment has already been unfrozen
     private bool isFrozen = true;
+    public bool kinematicAtStart = true;
 
+    void OnValidate()
+    {
+        if (this.kinematicAtStart)
+        {
+            this.GetComponent<Rigidbody>().isKinematic = true;
+        }
+    }
+    
     void OnCollisionEnter(Collision collision)
     {
         if (!this.isFrozen) 
@@ -78,6 +87,11 @@ public class UnfreezeFragment : MonoBehaviour
     private void UnfreezeThis()
     {
         this.GetComponent<Rigidbody>().constraints = RigidbodyConstraints.None;
-        this.isFrozen = false;   
+        this.isFrozen = false;
+
+        if (this.kinematicAtStart)
+        {
+            this.GetComponent<Rigidbody>().isKinematic = false;
+        }   
     }
 }
