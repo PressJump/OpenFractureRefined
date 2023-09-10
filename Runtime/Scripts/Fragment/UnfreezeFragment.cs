@@ -16,6 +16,12 @@ public class UnfreezeFragment : MonoBehaviour
     private bool isFrozen = true;
     public bool kinematicAtStart = true;
 
+    public AudioClip debriSound;
+    public Vector2 pitchRange = new Vector2(0.8f, 1.2f);
+    //Volume of the sound effect scroll bar
+    [Range(0, 1)]
+    public float volume = 0.6f;
+
     void OnValidate()
     {
         if (this.kinematicAtStart)
@@ -93,5 +99,17 @@ public class UnfreezeFragment : MonoBehaviour
         {
             this.GetComponent<Rigidbody>().isKinematic = false;
         }   
+
+        if (this.debriSound != null)
+        {
+            //Play sound clip at the position of the fragment with volume and pitch
+            float pitch = Random.Range(pitchRange.x, pitchRange.y);
+            //Add AudioSource component to the fragment
+            AudioSource audioSource = this.gameObject.AddComponent<AudioSource>();
+            audioSource.clip = debriSound;
+            audioSource.volume = volume;
+            audioSource.pitch = pitch;
+            audioSource.Play();
+        }
     }
 }
